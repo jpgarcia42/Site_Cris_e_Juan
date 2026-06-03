@@ -1,0 +1,1816 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Nossa Retrospectiva de Amor ❤️ Cris & Você</title>
+
+    <!-- Google Fonts para tipografia premium e moderna -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ==========================================================================
+       🎨 SISTEMA DE DESIGN & ESTILOS (Spotify Wrapped & Premium Dark Theme)
+       ========================================================================== */
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+      }
+
+      body {
+        background-color: #050014;
+        font-family: "Outfit", sans-serif;
+        color: #ffffff;
+        overflow: hidden;
+        height: 100vh;
+        height: -webkit-fill-available; /* Suporte para barras dinâmicas de celular */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+
+      /* Efeito de iluminação ambiental desfocada ao fundo no PC */
+      .ambient-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        filter: blur(40px) brightness(0.2);
+        z-index: 1;
+        transition: background-image 0.8s ease-in-out;
+        opacity: 0.75;
+      }
+
+      .ambient-gradient {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(138, 43, 226, 0.2) 0%,
+          #050014 100%
+        );
+        z-index: 2;
+      }
+
+      /* Container dos Stories (Celular simulado no PC, tela cheia no mobile) */
+      .story-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        max-width: 450px;
+        max-height: 850px;
+        background-color: #000000;
+        border-radius: 24px;
+        box-shadow:
+          0 25px 60px rgba(0, 0, 0, 0.8),
+          0 0 20px rgba(255, 0, 110, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        overflow: hidden;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        aspect-ratio: 9/16;
+      }
+
+      @media (max-width: 480px) {
+        .story-container {
+          max-width: 100vw;
+          max-height: 100vh;
+          height: 100%;
+          border-radius: 0;
+          border: none;
+          aspect-ratio: auto;
+        }
+      }
+
+      /* Barrinhas de Progresso no Topo */
+      .progress-header {
+        position: absolute;
+        top: 15px;
+        left: 0;
+        width: 100%;
+        padding: 0 12px;
+        z-index: 100;
+        display: flex;
+        gap: 6px;
+      }
+
+      .progress-bar-container {
+        flex: 1;
+        height: 3px;
+        background-color: rgba(255, 255, 255, 0.25);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .progress-bar-fill {
+        width: 0%;
+        height: 100%;
+        background-color: #ffffff;
+        border-radius: 10px;
+      }
+
+      /* Detalhes de Perfil no Topo */
+      .story-top-info {
+        position: absolute;
+        top: 26px;
+        left: 0;
+        width: 100%;
+        padding: 0 15px;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #ff006e, #833ab4, #3a0ca3);
+        border: 2px solid #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .user-details h3 {
+        font-size: 14px;
+        font-weight: 800;
+        color: #ffffff;
+        letter-spacing: 0.5px;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+        font-family: "Space Grotesk", sans-serif;
+      }
+
+      .user-details p {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.75);
+        font-weight: 400;
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+      }
+
+      /* Áreas de clique para navegar (Metades invisíveis da tela) */
+      .nav-tap-area {
+        position: absolute;
+        top: 70px;
+        bottom: 90px;
+        z-index: 80;
+        cursor: pointer;
+      }
+
+      .nav-tap-left {
+        left: 0;
+        width: 33%;
+      }
+
+      .nav-tap-right {
+        right: 0;
+        width: 67%;
+      }
+
+      /* Setas de navegação visual */
+      .nav-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        background: rgba(18, 18, 18, 0.45);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.85);
+        z-index: 90; /* Acima do slide, abaixo dos controles superiores */
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+      }
+
+      .nav-arrow:hover {
+        background: rgba(18, 18, 18, 0.8);
+        color: #00ff66; /* Destaque verde Spotify no hover */
+        border-color: #00ff66;
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 0 12px rgba(0, 255, 102, 0.35);
+      }
+
+      .nav-arrow:active {
+        transform: translateY(-50%) scale(0.95);
+      }
+
+      .nav-arrow-left {
+        left: 15px;
+      }
+
+      .nav-arrow-right {
+        right: 15px;
+      }
+
+      @media (max-width: 480px) {
+        .nav-arrow {
+          width: 36px;
+          height: 36px;
+          background: rgba(18, 18, 18, 0.3);
+          opacity: 0.6;
+        }
+        .nav-arrow-left {
+          left: 10px;
+        }
+        .nav-arrow-right {
+          right: 10px;
+        }
+      }
+
+      /* Conteiner dos Slides */
+      .story-slides-container {
+        flex: 1;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: #000;
+      }
+
+      .story-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.4s ease,
+          transform 0.4s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 20px 110px 20px; /* margem para o player */
+        z-index: 10;
+        text-align: center;
+        transform: scale(0.95);
+      }
+
+      .story-slide.active {
+        opacity: 1;
+        visibility: visible;
+        z-index: 20;
+        transform: scale(1);
+      }
+
+      /* 🖼️ Estilos para Fotos */
+      .story-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+      }
+
+      .story-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.65) 0%,
+          rgba(0, 0, 0, 0.1) 20%,
+          rgba(0, 0, 0, 0.1) 60%,
+          rgba(0, 0, 0, 0.85) 100%
+        );
+        z-index: 2;
+      }
+
+      /* Card de Texto Romântico das Fotos */
+      .photo-text-card {
+        position: absolute;
+        bottom: 120px;
+        left: 20px;
+        right: 20px;
+        background: rgba(18, 18, 18, 0.85);
+        border: 1px solid rgba(255, 0, 110, 0.25);
+        border-radius: 18px;
+        padding: 18px;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow:
+          0 10px 30px rgba(0, 0, 0, 0.5),
+          0 0 10px rgba(255, 0, 110, 0.05);
+        transform: translateY(0);
+        animation: cardEnter 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 95;
+      }
+
+      @keyframes cardEnter {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .photo-text-card p {
+        font-size: 15px;
+        line-height: 1.5;
+        font-weight: 500;
+        color: #ffffff;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+      }
+
+      /* 🏷️ Estilos Gerais de Spotify Wrapped */
+      .wrapped-badge {
+        font-family: "Space Grotesk", sans-serif;
+        background-color: #00ff66;
+        color: #000000;
+        font-size: 11px;
+        font-weight: bold;
+        padding: 6px 14px;
+        border-radius: 50px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(0, 255, 102, 0.3);
+        z-index: 5;
+      }
+
+      .neon-slanted-title {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 28px;
+        font-weight: 800;
+        color: #00ff66;
+        transform: skewY(-3deg);
+        line-height: 1.1;
+        text-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+        margin-bottom: 30px;
+        text-transform: uppercase;
+        z-index: 5;
+      }
+
+      .glow-date {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 40px;
+        font-weight: 800;
+        color: #ff006e;
+        text-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
+        margin-bottom: 25px;
+        z-index: 5;
+        letter-spacing: 1px;
+      }
+
+      .special-card-text {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #e0e0e0;
+        max-width: 90%;
+        margin-bottom: 35px;
+        z-index: 5;
+        font-weight: 300;
+      }
+
+      .animated-decorations {
+        font-size: 26px;
+        z-index: 5;
+        animation: floatBadge 3s ease-in-out infinite;
+      }
+
+      @keyframes floatBadge {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+
+      /* 📊 Estilos da Tela do Contador (Retrospectiva Spotify) */
+      .spotify-style-header {
+        font-size: 18px;
+        font-weight: 600;
+        color: #b3b3b3;
+        margin-bottom: 15px;
+        z-index: 5;
+      }
+
+      .counter-number {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 52px;
+        font-weight: 800;
+        color: #00ff66;
+        text-shadow: 0 0 25px rgba(0, 255, 102, 0.5);
+        margin: 10px 0;
+        z-index: 5;
+        letter-spacing: -1px;
+      }
+
+      .wrapped-badge-sub {
+        background-color: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+        font-size: 11px;
+        font-weight: bold;
+        padding: 6px 14px;
+        border-radius: 50px;
+        letter-spacing: 0.5px;
+        margin-bottom: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 5;
+      }
+
+      .counter-breakdown {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 20px;
+        border-radius: 18px;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        margin-top: 10px;
+        z-index: 5;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      }
+
+      /* ⏳ Estilos do Cronômetro Regressivo */
+      .countdown-grid {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin: 25px 0;
+        width: 100%;
+        z-index: 5;
+      }
+
+      .countdown-item {
+        background: rgba(18, 18, 18, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 14px 6px;
+        border-radius: 14px;
+        flex: 1;
+        max-width: 75px;
+        text-align: center;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+
+      .countdown-item span {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: #ff006e;
+        text-shadow: 0 0 10px rgba(255, 0, 110, 0.3);
+        display: block;
+      }
+
+      .countdown-item p {
+        font-size: 9px;
+        color: #b3b3b3;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: 4px;
+        font-weight: 600;
+      }
+
+      .surprise-container {
+        margin: 20px 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 95;
+      }
+
+      .surprise-locked {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px dashed rgba(255, 255, 255, 0.2);
+        color: rgba(255, 255, 255, 0.6);
+        padding: 15px 20px;
+        border-radius: 12px;
+        font-size: 13px;
+        text-align: center;
+        width: 100%;
+        max-width: 320px;
+      }
+
+      .surprise-btn {
+        display: none;
+        background: linear-gradient(135deg, #ff006e 0%, #3a0ca3 100%);
+        color: #ffffff;
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: bold;
+        font-size: 15px;
+        padding: 15px 25px;
+        border-radius: 50px;
+        text-decoration: none;
+        box-shadow: 0 10px 25px rgba(255, 0, 110, 0.4);
+        animation: pulseButton 1.5s infinite alternate;
+        width: 100%;
+        max-width: 320px;
+        text-align: center;
+        border: none;
+        cursor: pointer;
+        letter-spacing: 0.5px;
+      }
+
+      @keyframes pulseButton {
+        from {
+          transform: scale(1);
+          box-shadow: 0 8px 20px rgba(255, 0, 110, 0.4);
+        }
+        to {
+          transform: scale(1.05);
+          box-shadow:
+            0 15px 30px rgba(255, 0, 110, 0.6),
+            0 0 15px rgba(131, 58, 180, 0.4);
+        }
+      }
+
+      .restart-btn {
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        font-family: "Outfit", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 10px;
+        z-index: 95;
+      }
+
+      .restart-btn:hover {
+        background: rgba(255, 255, 255, 0.18);
+        transform: scale(1.02);
+      }
+
+      /* 🔊 Tocador de Música Spotify (Fictício/Real acoplado) */
+      .spotify-player-footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 90px;
+        background-color: #121212;
+        border-top: 1px solid #282828;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px 20px 20px;
+        z-index: 100;
+      }
+
+      .player-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        max-width: 65%;
+      }
+
+      .album-art {
+        width: 46px;
+        height: 46px;
+        background: linear-gradient(135deg, #ff006e 0%, #833ab4 100%);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        animation: spinAlbum 8s linear infinite;
+        animation-play-state: paused;
+      }
+
+      @keyframes spinAlbum {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .track-details {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .track-title-container {
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+      }
+
+      .track-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #ffffff;
+        display: inline-block;
+        white-space: nowrap;
+        animation: textScroll 12s linear infinite;
+      }
+
+      @keyframes textScroll {
+        0% {
+          transform: translateX(5%);
+        }
+        100% {
+          transform: translateX(-100%);
+        }
+      }
+
+      .track-artist {
+        font-size: 11px;
+        color: #b3b3b3;
+        margin-top: 2px;
+        font-weight: 400;
+      }
+
+      .player-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      /* Equalizer animado */
+      .wave-visualizer {
+        display: flex;
+        align-items: flex-end;
+        gap: 3px;
+        height: 18px;
+        width: 25px;
+      }
+
+      .wave-visualizer .bar {
+        width: 3px;
+        height: 2px;
+        background-color: #00ff66;
+        border-radius: 1px;
+        animation: eqAnimation 1s ease-in-out infinite alternate;
+        animation-play-state: paused;
+      }
+
+      .wave-visualizer .bar:nth-child(1) {
+        animation-duration: 0.7s;
+      }
+      .wave-visualizer .bar:nth-child(2) {
+        animation-duration: 1.1s;
+      }
+      .wave-visualizer .bar:nth-child(3) {
+        animation-duration: 0.8s;
+      }
+      .wave-visualizer .bar:nth-child(4) {
+        animation-duration: 1.2s;
+      }
+      .wave-visualizer .bar:nth-child(5) {
+        animation-duration: 0.6s;
+      }
+
+      @keyframes eqAnimation {
+        0% {
+          height: 2px;
+        }
+        100% {
+          height: 18px;
+        }
+      }
+
+      .wave-visualizer.playing .bar {
+        animation-play-state: running;
+      }
+
+      .player-play-btn {
+        background: none;
+        border: none;
+        color: #ffffff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: transform 0.2s;
+      }
+
+      .player-play-btn:hover {
+        transform: scale(1.1);
+      }
+
+      /* Linha de progresso que percorre o tempo do Story */
+      .player-progress-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #282828;
+      }
+
+      .player-progress-fill {
+        width: 0%;
+        height: 100%;
+        background-color: #00ff66;
+      }
+
+      /* ⏸️ Indicador Visual de Pausa */
+      .pause-indicator {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.85);
+        background: rgba(0, 0, 0, 0.75);
+        padding: 18px;
+        border-radius: 50%;
+        color: #ffffff;
+        z-index: 150;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.2s,
+          transform 0.2s;
+        pointer-events: none;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      }
+
+      .pause-indicator.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      /* 🚪 Tela de Boas-Vindas */
+      .welcome-screen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #050014;
+        z-index: 999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 24px;
+        transition: opacity 0.6s ease;
+      }
+
+      .welcome-card {
+        background: linear-gradient(135deg, #18032b 0%, #060017 100%);
+        border: 1px solid rgba(255, 0, 110, 0.2);
+        border-radius: 28px;
+        padding: 45px 30px;
+        text-align: center;
+        width: 100%;
+        max-width: 380px;
+        box-shadow:
+          0 20px 50px rgba(131, 58, 180, 0.25),
+          0 0 20px rgba(255, 0, 110, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .welcome-heart {
+        font-size: 64px;
+        margin-bottom: 20px;
+        animation: welcomePulse 1.2s infinite ease-in-out;
+        display: inline-block;
+      }
+
+      @keyframes welcomePulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.15);
+          filter: drop-shadow(0 0 15px rgba(255, 0, 110, 0.6));
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .welcome-card h2 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 26px;
+        font-weight: 800;
+        background: linear-gradient(45deg, #ff006e, #00ff66);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+      }
+
+      .welcome-card p {
+        font-size: 14px;
+        color: #c5bdf0;
+        line-height: 1.5;
+        margin-bottom: 35px;
+        font-weight: 300;
+      }
+
+      .welcome-btn {
+        background-color: #00ff66;
+        color: #000000;
+        border: none;
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: bold;
+        font-size: 16px;
+        padding: 16px 32px;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 8px 25px rgba(0, 255, 102, 0.35);
+        width: 100%;
+      }
+
+      .welcome-btn:hover {
+        background-color: #1ed760;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(0, 255, 102, 0.5);
+      }
+
+      .welcome-footer {
+        font-size: 11px;
+        color: rgba(197, 189, 240, 0.5);
+        margin-top: 15px;
+        font-weight: 400;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Efeito Ambient Light no Desktop (Dinâmico) -->
+    <div class="ambient-bg" id="ambient-bg"></div>
+    <div class="ambient-gradient"></div>
+
+    <!-- Celular / Container de Stories -->
+    <div class="story-container">
+      <!-- Tela de Boas-Vindas (Garante autoplay no navegador) -->
+      <div class="welcome-screen" id="welcome-screen">
+        <div class="welcome-card">
+          <div class="welcome-heart">❤️</div>
+          <h2>Nosso Amor</h2>
+          <p>
+            Prepare-se para relembrar momentos inesquecíveis que construímos
+            juntos meu amor.
+          </p>
+          <button class="welcome-btn" onclick="startExperience()">
+            Abrir Retrospectiva
+          </button>
+          <div class="welcome-footer">🔊 Recomendo ligar o som!</div>
+        </div>
+      </div>
+
+      <!-- Indicador Visual de Pausa (Ao segurar a tela) -->
+      <div class="pause-indicator" id="pause-indicator">
+        <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor">
+          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+        </svg>
+      </div>
+
+      <!-- Barras de Progresso no Topo -->
+      <div class="progress-header">
+        <!-- Gerado Dinamicamente via JS -->
+      </div>
+
+      <!-- Informações do Usuário/Perfil no Topo -->
+      <div class="story-top-info">
+        <div class="user-profile">
+          <div class="avatar">C</div>
+          <div class="user-details">
+            <h3>Minha amada Cris e Eu 💑</h3>
+            <p>nosso amor infinito</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conteiner de Exibição dos Slides com Setas e Tap Zones Internas -->
+      <div
+        class="story-slides-container"
+        onmousedown="handlePointerDown(event)"
+        onmouseup="handlePointerUp(event)"
+        ontouchstart="handlePointerDown(event)"
+        ontouchend="handlePointerUp(event)"
+      >
+        <!-- Áreas Invisíveis de Clique para Avançar/Voltar -->
+        <div class="nav-tap-area nav-tap-left"></div>
+        <div class="nav-tap-area nav-tap-right"></div>
+
+        <!-- Setas de navegação visual -->
+        <div class="nav-arrow nav-arrow-left" id="arrow-left">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+          </svg>
+        </div>
+        <div class="nav-arrow nav-arrow-right" id="arrow-right">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+          </svg>
+        </div>
+
+        <!-- Slides gerados dinamicamente via JS -->
+        <div id="slides-holder" style="width: 100%; height: 100%"></div>
+      </div>
+
+      <!-- 🔊 Player Spotify Wrapped na Base -->
+      <div class="spotify-player-footer">
+        <!-- Linha fina de progresso do player -->
+        <div class="player-progress-bar">
+          <div class="player-progress-fill" id="player-progress-fill"></div>
+        </div>
+
+        <div class="player-left">
+          <div class="album-art" id="album-art">❤️</div>
+          <div class="track-details">
+            <div class="track-title-container">
+              <div class="track-title" id="track-title-text">
+                Nossa Trilha Sonora: Playlist de Amor Infinita 🌸
+              </div>
+            </div>
+            <div class="track-artist" id="track-artist-text">Retrospectiva Especial Cris & Você</div>
+          </div>
+        </div>
+
+        <div class="player-right">
+          <!-- Equalizador visual (Fictício que acompanha o áudio) -->
+          <div class="wave-visualizer" id="equalizer">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
+
+          <!-- Botão Play/Pause -->
+          <button
+            class="player-play-btn"
+            id="sound-btn"
+            onclick="togglePlayPause()"
+          >
+            <svg
+              id="play-icon"
+              viewBox="0 0 24 24"
+              width="26"
+              height="26"
+              fill="currentColor"
+              style="display: none"
+            >
+              <path d="M8 5v14l11-7z" />
+            </svg>
+            <svg
+              id="pause-icon"
+              viewBox="0 0 24 24"
+              width="26"
+              height="26"
+              fill="currentColor"
+            >
+              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Áudio em Background -->
+    <audio id="bg-audio" loop>
+      <source id="audio-source" src="" type="audio/mpeg" />
+    </audio>
+
+    <!-- ==========================================================================
+       ⚙️ LÓGICA DE CONTROLE JAVASCRIPT
+       ========================================================================== */ -->
+    <script>
+      // ==========================================
+      // 📸 TEXTOS E FOTOS DOS STORIES
+      // Edite os textos abaixo para personalizar cada uma das 37 fotos.
+      // ==========================================
+      const BANCO_DE_IMAGENS = [
+        {
+          url: "imagens/foto1.jpg",
+          texto: "Eu amo muito seu sorriso minha lindaaaa!!! 🥰🥰",
+        },
+        {
+          url: "imagens/foto2.jpg",
+          texto: "Obrigado por ter ido comigo assistir Tron 3 ❤️❤️",
+        },
+        {
+          url: "imagens/foto3.jpg",
+          texto: "Te amo muito meu amor!!! Apaixonado por você!!! 🥰🥰",
+        },
+        { url: "imagens/foto4.jpg", texto: "Nossa primeira viagem 💕💕" },
+        {
+          url: "imagens/foto5.jpg",
+          texto: "Você é a minha melhor escolha de todos os dias. ❤️❤️",
+        },
+        { url: "imagens/foto6.jpg", texto: "Saudades desse dia! 🥰💕" },
+        { url: "imagens/foto7.jpg", texto: "Minha tão amada Cris!!! 🥰🥰" },
+        { url: "imagens/foto8.jpg", texto: "Te amo muito meu amor!!! 🥰🥰" },
+        {
+          url: "imagens/foto9.jpg",
+          texto: "Esse abraço que me cura e me traz paz!!! 🤗🤗",
+        },
+        {
+          url: "imagens/foto10.jpg",
+          texto: "Nossa conexão é algo simplesmente inexplicável!!! ❤️❤️",
+        },
+        { url: "imagens/foto11.jpg", texto: "Meu grudinho!!! 😍❤️" },
+        {
+          url: "imagens/foto12.jpg",
+          texto: "Você transforma minha vida todos os dias!!! 😍😍",
+        },
+        {
+          url: "imagens/foto13.jpg",
+          texto: "Dona do meu coração e da minha vida!!! 🥰🥰",
+        },
+        {
+          url: "imagens/foto14.jpg",
+          texto: "Onde quer que eu esteja, meu coração é seu!!! 💓💓",
+        },
+        {
+          url: "imagens/foto15.jpg",
+          texto:
+            "Sorrir contigo é a coisa mais fácil e gostosa do mundo!!! 😁💖",
+        },
+        {
+          url: "imagens/foto16.jpg",
+          texto: "Minha pessoa favorita em todo o universo. 💓✨",
+        },
+        { url: "imagens/foto17.jpg", texto: "Um beijão de requeijão!!! 😍❤️" },
+        {
+          url: "imagens/foto18.jpg",
+          texto: "Aquele seu olhar que me desmonta por inteiro. 👀💕",
+        },
+        {
+          url: "imagens/foto19.jpg",
+          texto: "Cada foto nossa guarda um pedaço de felicidade. 📸💖",
+        },
+        {
+          url: "imagens/foto20.jpg",
+          texto: "A vida é muito mais bonita e colorida com você. 🎨❤️",
+        },
+        {
+          url: "imagens/foto21.jpg",
+          texto: "Nosso amor cresce e floresce a cada novo amanhecer. ❤️🌱",
+        },
+        {
+          url: "imagens/foto22.jpg",
+          texto: "Ao seu lado, sinto que posso alcançar qualquer sonho. 🏆❤️",
+        },
+        {
+          url: "imagens/foto23.jpg",
+          texto: "A risada mais gostosa que eu já ouvi. 🎙️🥰",
+        },
+        {
+          url: "imagens/foto24.jpg",
+          texto: "Graças a Deus nos encontramos meu amor!!! 🙏💖",
+        },
+        {
+          url: "imagens/foto25.jpg",
+          texto: "Meu amor, meu porto seguro, amada da minha alma!!! ❤️❤️",
+        },
+        { url: "imagens/foto26.jpg", texto: "Minha linda!!! 😍💕" },
+        {
+          url: "imagens/foto27.jpg",
+          texto: "Não desgrudo não!!! TE AMO!!! 😊❤️",
+        },
+        {
+          url: "imagens/foto28.jpg",
+          texto: "Te amar me faz tão feliz!!! 🌸❤️",
+        },
+        {
+          url: "imagens/foto29.jpg",
+          texto: "Os seus sonhos agora também são os meus!!! 💭💖",
+        },
+        { url: "imagens/foto30.jpg", texto: "Minha melhor amiga!!! 🤝💕" },
+        {
+          url: "imagens/foto31.jpg",
+          texto: "Que o nosso amor continue sendo leve e sincero!!! 🎈❤️",
+        },
+        {
+          url: "imagens/foto32.jpg",
+          texto:
+            "Encontrei em você tudo o que eu sempre procurei em alguém. 🔍💖",
+        },
+        {
+          url: "imagens/foto33.jpg",
+          texto: "Juntos fazemos o casal mais bonito do mundo!!! ❤️❤️",
+        },
+        {
+          url: "imagens/foto34.jpg",
+          texto: "Eu amo a nossa sintonia maravilhosa!!! 💕💕",
+        },
+        {
+          url: "imagens/foto35.jpg",
+          texto: "Com você, o mundo parece um lugar lindo de se viver. ❤️❤️",
+        },
+        {
+          url: "imagens/foto36.jpg",
+          texto: "Cada pequeno detalhe seu faz eu me apaixonar novamente. ❤️❤️",
+        },
+        {
+          url: "imagens/foto37.jpg",
+          texto:
+            "Para todo o sempre nós dois, não importa o que aconteça!!! ❤️❤️",
+        },
+      ];
+
+      // ==========================================
+    // 🎵 PLAYLIST DE MÚSICAS (RANDOMIZADAS E EM SHUFFLE)
+    // ==========================================
+    const PLAYLIST = [
+      {
+        url: 'musicas/César Menotti, Fabiano - Como Um Anjo.mp3',
+        titulo: 'Como Um Anjo',
+        artista: 'César Menotti & Fabiano'
+      },
+      {
+        url: 'musicas/Jads e Jadson e @paulafernandes - Linda Senhorita (Clipe Oficial).mp3',
+        titulo: 'Linda Senhorita',
+        artista: 'Jads & Jadson e Paula Fernandes'
+      },
+      {
+        url: 'musicas/YTDown_YouTube_Accidentally-In-Love-From-Shrek-2-Soundt_Media_vnBec1gpXSM_008_128k.mp3',
+        titulo: 'Accidentally In Love',
+        artista: 'Counting Crows (Shrek 2)'
+      },
+      {
+        url: 'musicas/YTDown_YouTube_Dragon-Ball-GT-Abertura-Melhor-qualidade_Media_3n3itDDgmQQ_008_128k.mp3',
+        titulo: 'Sorriso Resplandecente (Dragon Ball GT)',
+        artista: 'Sorriso Resplandecente'
+      },
+      {
+        url: 'musicas/YTDown_YouTube_Elvis-Presley-Burning-Love-Official-Audi_Media_zf2VYAtqRe0_009_128k.mp3',
+        titulo: 'Burning Love',
+        artista: 'Elvis Presley'
+      },
+      {
+        url: 'musicas/YTDown_YouTube_Gigi-Perez-Sailor-Song-Official-Music-Vi_Media_1lrFsXkT_rM_009_128k.mp3',
+        titulo: 'Sailor Song',
+        artista: 'Gigi Perez'
+      },
+      {
+        url: 'musicas/YTDown_YouTube_Legiao-Urbana-Tempo-perdido_Media_YPLQHeUSX2g_007_128k.mp3',
+        titulo: 'Tempo Perdido',
+        artista: 'Legião Urbana'
+      },
+      {
+        url: 'musicas/YTDown_YouTube_Media_UVCk4GfFXko_008_128k.mp3',
+        titulo: 'Nossa Sintonia Especial 💖',
+        artista: 'Cris & Você'
+      },
+      {
+        url: 'musicas/YTDown_YouTube_Neil-Diamond-Sweet-Caroline-Audio_Media_4F_RCWVoL4s_009_128k.mp3',
+        titulo: 'Sweet Caroline',
+        artista: 'Neil Diamond'
+      },
+      {
+        url: 'musicas/YTDown_YouTube_Snow-Patrol-Open-Your-Eyes-Official-Vide_Media_fk1Q9y6VVy0_009_128k(1).mp3',
+        titulo: 'Open Your Eyes',
+        artista: 'Snow Patrol'
+      }
+    ];
+
+    let playlistEmbaralhada = [];
+    let indiceMusicaAtual = 0;
+
+      // ==========================================
+      // 🧠 MOTOR DO STORY E NAVEGAÇÃO
+      // ==========================================
+      let activeStories = [];
+      let currentStoryIndex = 0;
+      const storyDuration = 5500; // Tempo em milissegundos por Story (5.5s)
+
+      let isPaused = false;
+      let currentProgress = 0;
+      let lastFrameTime = 0;
+      let animationFrameId = null;
+      let audio = null;
+      let datingIntervalId = null;
+
+      // Controle de toque/hold
+      let pointerDownTime = 0;
+      const HOLD_DELAY = 220; // Tempo mínimo para identificar "segurar" em vez de "toque"
+
+      // Helper para embaralhar array
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
+
+      // Inicializa a sequência de stories
+      function initStories() {
+        activeStories = [];
+
+        // 1. Story 1: O Início
+        activeStories.push({
+          tipo: "card-inicio",
+          titulo: "O Início de Tudo 💖💖",
+          data: "29/08/2025",
+          texto:
+            "O dia em que nos conhecemos. O dia em que tudo mudou e que eu nunca vou me esquecer!",
+        });
+
+        // 2. Story 2: O Pedido
+        activeStories.push({
+          tipo: "card-pedido",
+          titulo: "O Início do Namoro 💍💖",
+          data: "28/09/2025",
+          texto:
+            'O sim mais lindo de todos! O início oficial do nosso "para sempre". Daqui para a eternidade, de mãos dadas.',
+        });
+
+        // 3. Bloco de Fotos (10 fotos aleatórias do banco de 37)
+        const fotosAleatorias = shuffleArray([...BANCO_DE_IMAGENS]).slice(
+          0,
+          10,
+        );
+        fotosAleatorias.forEach((foto) => {
+          activeStories.push({
+            tipo: "foto",
+            url: foto.url,
+            texto: foto.texto,
+          });
+        });
+
+        // 4. Story: O Contador (Spotify Wrapped)
+        activeStories.push({
+          tipo: "contador",
+          badge: "Retrospectiva Spotify do Casal",
+          titulo: "Estamos sintonizados há:",
+          dataInicio: "2025-09-28T00:00:00",
+        });
+
+        // 5. Story: O Mistério Final (Countdown)
+        activeStories.push({
+          tipo: "countdown",
+          titulo: "E eu tenho uma surpresa para você...",
+          dataAlvo: "2026-07-14T20:00:00",
+        });
+      }
+
+      // Monta o DOM dos stories
+      function renderProgressBars() {
+        const container = document.querySelector(".progress-header");
+        container.innerHTML = "";
+        activeStories.forEach((_, idx) => {
+          const barContainer = document.createElement("div");
+          barContainer.className = "progress-bar-container";
+          barContainer.innerHTML = `<div class="progress-bar-fill" id="bar-${idx}"></div>`;
+          container.appendChild(barContainer);
+        });
+      }
+
+      function renderSlides() {
+        const container = document.getElementById("slides-holder");
+        container.innerHTML = "";
+
+        activeStories.forEach((story, idx) => {
+          const slide = document.createElement("div");
+          slide.className = `story-slide ${idx === 0 ? "active" : ""}`;
+          slide.id = `slide-${idx}`;
+
+          if (story.tipo === "card-inicio") {
+            slide.style.background =
+              "radial-gradient(circle at top left, #5c00a3, #000000 80%)";
+            slide.innerHTML = `
+            <div class="wrapped-badge">1. O Início</div>
+            <div class="neon-slanted-title">O DIA EM QUE O MUNDO MUDOU... ⚡</div>
+            <div class="glow-date">29/08/2025</div>
+            <div class="special-card-text">${story.texto}</div>
+            <div class="animated-decorations">💖💖</div>
+          `;
+          } else if (story.tipo === "card-pedido") {
+            slide.style.background =
+              "radial-gradient(circle at top right, #d90429, #000000 80%)";
+            slide.innerHTML = `
+            <div class="wrapped-badge" style="background-color: #ff006e; color: #fff;">2. O Pedido</div>
+            <div class="neon-slanted-title" style="color: #ff006e; text-shadow: 0 0 15px rgba(255, 0, 110, 0.4);">O SIM MAIS LINDO! 💍💖</div>
+            <div class="glow-date" style="color: #00ff66; text-shadow: 0 0 15px rgba(0, 255, 102, 0.4);">28/09/2025</div>
+            <div class="special-card-text">${story.texto}</div>
+            <div class="animated-decorations">🌹 🥰🥰 🌹</div>
+          `;
+          } else if (story.tipo === "foto") {
+            // Imagem com fallback dinâmico para Unsplash romântico se der erro (caso o usuário não tenha a foto ainda)
+            slide.innerHTML = `
+            <img class="story-img" src="${story.url}" alt="Nossos momentos" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=600&auto=format&fit=crop';">
+            <div class="story-overlay"></div>
+            <div class="photo-text-card">
+              <p>${story.texto}</p>
+            </div>
+          `;
+          } else if (story.tipo === "contador") {
+            slide.style.background =
+              "radial-gradient(circle at bottom right, #3a0ca3, #000000 80%)";
+            slide.innerHTML = `
+            <div class="wrapped-badge" style="background-color: #00ff66; color: #000;">${story.badge}</div>
+            <div class="spotify-style-header">Cris estamos juntos nesse amor apaixonados há:</div>
+            <div class="counter-number" id="dating-minutes">0</div>
+            <div class="wrapped-badge-sub">minutos e contando 🎧</div>
+            <div class="counter-breakdown" id="dating-breakdown">
+              Carregando minutos...
+            </div>
+          `;
+          } else if (story.tipo === "countdown") {
+            slide.style.background =
+              "radial-gradient(circle at center, #1b0336, #000000 90%)";
+            slide.innerHTML = `
+            <div class="wrapped-badge" style="background-color: #ff006e; color: #fff;">O Mistério Final</div>
+            <div class="neon-slanted-title" style="font-size: 23px; color: #ff006e;">Tenho uma surpresa para você... 🤫</div>
+            
+            <div class="countdown-grid">
+              <div class="countdown-item"><span id="cd-days">00</span><p>Dias</p></div>
+              <div class="countdown-item"><span id="cd-hours">00</span><p>Horas</p></div>
+              <div class="countdown-item"><span id="cd-mins">00</span><p>Mins</p></div>
+              <div class="countdown-item"><span id="cd-secs">00</span><p>Segs</p></div>
+            </div>
+
+            <div class="surprise-container">
+              <div class="surprise-locked" id="surprise-locked">
+                🔒 A surpresa se revelará no fim do tempo!
+              </div>
+              <a href="https://www.youtube.com/watch?v=o-jWu3sdCok&list=RDo-jWu3sdCok&start_radio=1" target="_blank" class="surprise-btn" id="surprise-btn">Revelar Surpresa 🎁</a>
+            </div>
+
+            <button class="restart-btn" onclick="restartStories(event)">
+              🔄 Recomeçar Histórias
+            </button>
+          `;
+          }
+
+          container.appendChild(slide);
+        });
+      }
+
+      // Gerencia o temporizador das barras por Frame
+      function startProgressTimer() {
+        cancelAnimationFrame(animationFrameId);
+        lastFrameTime = performance.now();
+
+        function updateFrame(now) {
+          if (isPaused) {
+            lastFrameTime = now;
+            animationFrameId = requestAnimationFrame(updateFrame);
+            return;
+          }
+
+          const delta = now - lastFrameTime;
+          lastFrameTime = now;
+
+          currentProgress += (delta / storyDuration) * 100;
+
+          if (currentProgress >= 100) {
+            currentProgress = 100;
+            updateBarWidth(currentStoryIndex, 100);
+            nextStory();
+          } else {
+            updateBarWidth(currentStoryIndex, currentProgress);
+            updatePlayerProgress(currentProgress);
+            animationFrameId = requestAnimationFrame(updateFrame);
+          }
+        }
+
+        animationFrameId = requestAnimationFrame(updateFrame);
+      }
+
+      function updateBarWidth(index, width) {
+        const bar = document.getElementById(`bar-${index}`);
+        if (bar) bar.style.width = `${width}%`;
+      }
+
+      function updatePlayerProgress(width) {
+        const bar = document.getElementById("player-progress-fill");
+        if (bar) bar.style.width = `${width}%`;
+      }
+
+      // Avança para o próximo story
+      function nextStory() {
+        cancelAnimationFrame(animationFrameId);
+        updateBarWidth(currentStoryIndex, 100);
+
+        if (currentStoryIndex < activeStories.length - 1) {
+          currentStoryIndex++;
+          showStory(currentStoryIndex);
+        } else {
+          // Pausa no último story
+          isPaused = true;
+          document.getElementById("equalizer").classList.remove("playing");
+          document.getElementById("album-art").style.animationPlayState =
+            "paused";
+        }
+      }
+
+      // Retorna para o story anterior
+      function prevStory() {
+        cancelAnimationFrame(animationFrameId);
+        updateBarWidth(currentStoryIndex, 0);
+
+        if (currentStoryIndex > 0) {
+          currentStoryIndex--;
+          updateBarWidth(currentStoryIndex, 0);
+          showStory(currentStoryIndex);
+        } else {
+          // Reinicia primeiro story
+          showStory(currentStoryIndex);
+        }
+      }
+
+      // Mostra um slide específico
+      function showStory(index) {
+        // Alterna classes ativas
+        document.querySelectorAll(".story-slide").forEach((slide) => {
+          slide.classList.remove("active");
+        });
+
+        const activeSlide = document.getElementById(`slide-${index}`);
+        if (activeSlide) activeSlide.classList.add("active");
+
+        // Atualiza estado de barras anteriores e futuras
+        for (let i = 0; i < activeStories.length; i++) {
+          if (i < index) {
+            updateBarWidth(i, 100);
+          } else if (i > index) {
+            updateBarWidth(i, 0);
+          }
+        }
+
+        // Atualiza fundo desfocado
+        const ambientBg = document.getElementById("ambient-bg");
+        const story = activeStories[index];
+        if (story.tipo === "foto") {
+          ambientBg.style.backgroundImage = `url('${story.url}')`;
+        } else {
+          ambientBg.style.backgroundImage = "none";
+        }
+
+        currentStoryIndex = index;
+        currentProgress = 0;
+        isPaused = false;
+
+        updateArrowVisibility(index);
+        startProgressTimer();
+      }
+
+      // Oculta ou mostra as setas de acordo com o story ativo (evita ir além dos limites)
+      function updateArrowVisibility(index) {
+        const leftArrow = document.getElementById("arrow-left");
+        const rightArrow = document.getElementById("arrow-right");
+
+        if (leftArrow) {
+          if (index === 0) {
+            leftArrow.style.opacity = "0";
+            leftArrow.style.pointerEvents = "none";
+          } else {
+            leftArrow.style.opacity = "1";
+            leftArrow.style.pointerEvents = "auto";
+          }
+        }
+
+        if (rightArrow) {
+          if (index === activeStories.length - 1) {
+            rightArrow.style.opacity = "0";
+            rightArrow.style.pointerEvents = "none";
+          } else {
+            rightArrow.style.opacity = "1";
+            rightArrow.style.pointerEvents = "auto";
+          }
+        }
+      }
+
+      // ==========================================
+      // 👆 INTERATIVIDADE: PRESS & HOLD / CLIQUE LATERAIS
+      // ==========================================
+      function handlePointerDown(e) {
+        // Ignora toques em botões, links ou player de controle
+        if (
+          e.target.closest("button") ||
+          e.target.closest("a") ||
+          e.target.closest("#sound-btn")
+        ) {
+          return;
+        }
+
+        pointerDownTime = performance.now();
+        isPaused = true;
+
+        document.getElementById("pause-indicator").classList.add("show");
+        document.getElementById("album-art").style.animationPlayState =
+          "paused";
+
+        // Congela equalizer
+        document.getElementById("equalizer").classList.remove("playing");
+      }
+
+      function handlePointerUp(e) {
+        if (
+          e.target.closest("button") ||
+          e.target.closest("a") ||
+          e.target.closest("#sound-btn")
+        ) {
+          return;
+        }
+
+        const elapsed = performance.now() - pointerDownTime;
+        isPaused = false;
+
+        document.getElementById("pause-indicator").classList.remove("show");
+
+        // Retoma animações se o áudio estiver ativo
+        if (audio && !audio.paused) {
+          document.getElementById("album-art").style.animationPlayState =
+            "running";
+          document.getElementById("equalizer").classList.add("playing");
+        }
+
+        // Se foi um clique rápido (< 220ms), trata como navegação esquerda/direita
+        if (elapsed < HOLD_DELAY) {
+          const container = document.querySelector(".story-container");
+          const rect = container.getBoundingClientRect();
+          const clientX =
+            e.clientX || (e.changedTouches && e.changedTouches[0].clientX);
+          const relativeX = clientX - rect.left;
+          const width = rect.width;
+
+          if (relativeX < width * 0.33) {
+            prevStory();
+          } else {
+            nextStory();
+          }
+        }
+      }
+
+      // ==========================================
+      // 🔊 CONTROLE DE ÁUDIO REAL
+      // ==========================================
+      function initAudio() {
+        audio = document.getElementById("bg-audio");
+        inicializarPlaylist();
+        carregarMusica(indiceMusicaAtual);
+        configurarAudioEvents();
+      }
+
+      function inicializarPlaylist() {
+        playlistEmbaralhada = shuffleArray([...PLAYLIST]);
+        indiceMusicaAtual = 0;
+      }
+
+      function carregarMusica(index) {
+        if (!audio || playlistEmbaralhada.length === 0) return;
+        const musica = playlistEmbaralhada[index];
+        
+        // Define a fonte do áudio diretamente
+        audio.src = musica.url;
+        audio.load();
+        
+        // Atualiza textos do player Spotify
+        const tituloEl = document.getElementById('track-title-text');
+        const artistaEl = document.getElementById('track-artist-text');
+        if (tituloEl) tituloEl.textContent = `${musica.titulo} 🎵`;
+        if (artistaEl) artistaEl.textContent = musica.artista;
+      }
+
+      function configurarAudioEvents() {
+        audio.onended = () => {
+          proximaMusica();
+        };
+      }
+
+      function proximaMusica() {
+        indiceMusicaAtual++;
+        if (indiceMusicaAtual >= playlistEmbaralhada.length) {
+          inicializarPlaylist();
+        }
+        carregarMusica(indiceMusicaAtual);
+        
+        // Toca a música automática e inicia equalizador
+        audio.play().then(() => {
+          document.getElementById('play-icon').style.display = 'none';
+          document.getElementById('pause-icon').style.display = 'block';
+          document.getElementById('equalizer').classList.add('playing');
+          document.getElementById('album-art').style.animationPlayState = 'running';
+        }).catch(err => console.log("Erro ao tocar próxima música:", err));
+      }
+
+      function togglePlayPause() {
+        if (!audio) return;
+
+        const playIcon = document.getElementById("play-icon");
+        const pauseIcon = document.getElementById("pause-icon");
+        const eq = document.getElementById("equalizer");
+        const album = document.getElementById("album-art");
+
+        if (audio.paused) {
+          audio
+            .play()
+            .then(() => {
+              playIcon.style.display = "none";
+              pauseIcon.style.display = "block";
+              eq.classList.add("playing");
+              album.style.animationPlayState = "running";
+            })
+            .catch((err) => console.log("Áudio bloqueado:", err));
+        } else {
+          audio.pause();
+          playIcon.style.display = "block";
+          pauseIcon.style.display = "none";
+          eq.classList.remove("playing");
+          album.style.animationPlayState = "paused";
+        }
+      }
+
+      // Inicia tudo ao clicar na tela de Boas-Vindas
+      function startExperience() {
+        const welcome = document.getElementById("welcome-screen");
+        welcome.style.opacity = "0";
+        setTimeout(() => {
+          welcome.style.display = "none";
+        }, 600);
+
+        initAudio();
+
+        // Tenta tocar o áudio
+        audio
+          .play()
+          .then(() => {
+            document.getElementById("play-icon").style.display = "none";
+            document.getElementById("pause-icon").style.display = "block";
+            document.getElementById("equalizer").classList.add("playing");
+            document.getElementById("album-art").style.animationPlayState =
+              "running";
+          })
+          .catch((err) => {
+            console.log(
+              "Autoplay barrado pelo browser. Iniciará pausado.",
+              err,
+            );
+            document.getElementById("play-icon").style.display = "block";
+            document.getElementById("pause-icon").style.display = "none";
+            document.getElementById("equalizer").classList.remove("playing");
+            document.getElementById("album-art").style.animationPlayState =
+              "paused";
+          });
+
+        initStories();
+        renderProgressBars();
+        renderSlides();
+
+        startDatingIntervals();
+
+        showStory(0);
+      }
+
+      function restartStories(e) {
+        if (e) e.stopPropagation();
+
+        currentStoryIndex = 0;
+        currentProgress = 0;
+        isPaused = false;
+
+        // Sorteia novamente outras 10 fotos dinamicamente!
+        initStories();
+        renderProgressBars();
+        renderSlides();
+
+        // Força reiniciar as animações do player
+        if (audio && !audio.paused) {
+          document.getElementById("equalizer").classList.add("playing");
+          document.getElementById("album-art").style.animationPlayState =
+            "running";
+        }
+
+        showStory(0);
+      }
+
+      // ==========================================
+      // ⏱️ CÁLCULO DE MINUTOS E CONTADORES EM TEMPO REAL
+      // ==========================================
+      function startDatingIntervals() {
+        if (datingIntervalId) clearInterval(datingIntervalId);
+
+        updateDatingCounter();
+        updateCountdown();
+
+        // Atualização a cada segundo
+        datingIntervalId = setInterval(() => {
+          updateDatingCounter();
+          updateCountdown();
+        }, 1000);
+      }
+
+      function updateDatingCounter() {
+        const startDate = new Date("2025-09-28T00:00:00");
+        const now = new Date();
+
+        const diffMs = Math.max(0, now - startDate);
+        const totalMinutes = Math.floor(diffMs / 60000);
+        const totalSeconds = Math.floor(diffMs / 1000);
+
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        const minutesEl = document.getElementById("dating-minutes");
+        const breakdownEl = document.getElementById("dating-breakdown");
+
+        if (minutesEl) {
+          minutesEl.textContent = totalMinutes.toLocaleString("pt-BR");
+        }
+
+        if (breakdownEl) {
+          breakdownEl.innerHTML = `
+          <div style="font-size: 13px; font-weight: 700; color: #00ff66; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Ou traduzindo para o tempo:</div>
+          <div style="font-size: 15px; font-weight: 600; line-height: 1.4;">
+            ${days} dias, ${hours} horas, <br>
+            ${minutes} minutos e ${seconds} segundos
+          </div>
+          <div style="font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 10px; font-style: italic;">
+            Cada segundo uma nova batida na mesma frequência! 💖
+          </div>
+        `;
+        }
+      }
+
+      function updateCountdown() {
+        // Data Alvo: 14/07/2026 às 20:00
+        const targetDate = new Date("2026-07-14T20:00:00");
+        const now = new Date();
+        const diffMs = targetDate - now;
+
+        const cdDays = document.getElementById("cd-days");
+        const cdHours = document.getElementById("cd-hours");
+        const cdMins = document.getElementById("cd-mins");
+        const cdSecs = document.getElementById("cd-secs");
+
+        const lockedEl = document.getElementById("surprise-locked");
+        const btnEl = document.getElementById("surprise-btn");
+
+        if (diffMs <= 0) {
+          if (cdDays) cdDays.textContent = "00";
+          if (cdHours) cdHours.textContent = "00";
+          if (cdMins) cdMins.textContent = "00";
+          if (cdSecs) cdSecs.textContent = "00";
+
+          if (lockedEl) lockedEl.style.display = "none";
+          if (btnEl) btnEl.style.display = "block";
+        } else {
+          const totalSeconds = Math.floor(diffMs / 1000);
+          const days = Math.floor(totalSeconds / 86400);
+          const hours = Math.floor((totalSeconds % 86400) / 3600);
+          const minutes = Math.floor((totalSeconds % 3600) / 60);
+          const seconds = totalSeconds % 60;
+
+          const pad = (val) => String(val).padStart(2, "0");
+
+          if (cdDays) cdDays.textContent = pad(days);
+          if (cdHours) cdHours.textContent = pad(hours);
+          if (cdMins) cdMins.textContent = pad(minutes);
+          if (cdSecs) cdSecs.textContent = pad(seconds);
+
+          if (lockedEl) lockedEl.style.display = "block";
+          if (btnEl) btnEl.style.display = "none";
+        }
+      }
+    </script>
+  </body>
+</html>
