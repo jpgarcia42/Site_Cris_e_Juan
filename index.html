@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Nossa Retrospectiva de Amor ❤️ Cris & Você</title>
+    <title>Nossa Retrospectiva de Amor ❤️ Cris & Juan</title>
 
     <!-- Google Fonts para tipografia premium e moderna -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -29,13 +29,19 @@
         user-select: none;
       }
 
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
       body {
         background-color: #050014;
         font-family: "Outfit", sans-serif;
         color: #ffffff;
-        overflow: hidden;
-        height: 100vh;
-        height: -webkit-fill-available; /* Suporte para barras dinâmicas de celular */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -91,10 +97,14 @@
         aspect-ratio: 9/16;
       }
 
-      @media (max-width: 480px) {
+      @media (max-width: 768px) {
+        body {
+          align-items: stretch;
+        }
         .story-container {
           max-width: 100vw;
           max-height: 100vh;
+          width: 100%;
           height: 100%;
           border-radius: 0;
           border: none;
@@ -887,10 +897,10 @@
       <div class="welcome-screen" id="welcome-screen">
         <div class="welcome-card">
           <div class="welcome-heart">❤️</div>
-          <h2>Nosso Amor</h2>
+          <h2>Feliz Dia dos Namorados!</h2>
           <p>
-            Prepare-se para relembrar momentos inesquecíveis que construímos
-            juntos meu amor.
+            Minha amada Cris, prepare-se para relembrar momentos inesquecíveis
+            que construímos juntos meu amor.
           </p>
           <button class="welcome-btn" onclick="startExperience()">
             Abrir Retrospectiva
@@ -965,7 +975,9 @@
                 Nossa Trilha Sonora: Playlist de Amor Infinita 🌸
               </div>
             </div>
-            <div class="track-artist" id="track-artist-text">Retrospectiva Especial Cris & Você</div>
+            <div class="track-artist" id="track-artist-text">
+              Retrospectiva Especial Cris & Juan
+            </div>
           </div>
         </div>
 
@@ -1003,6 +1015,18 @@
               fill="currentColor"
             >
               <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+            </svg>
+          </button>
+
+          <!-- Botão Avançar Música (Skip Next) -->
+          <button
+            class="player-play-btn"
+            id="next-music-btn"
+            onclick="proximaMusica(event)"
+            style="margin-left: 12px"
+          >
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
+              <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
             </svg>
           </button>
         </div>
@@ -1153,63 +1177,63 @@
       ];
 
       // ==========================================
-    // 🎵 PLAYLIST DE MÚSICAS (RANDOMIZADAS E EM SHUFFLE)
-    // ==========================================
-    const PLAYLIST = [
-      {
-        url: 'musicas/César Menotti, Fabiano - Como Um Anjo.mp3',
-        titulo: 'Como Um Anjo',
-        artista: 'César Menotti & Fabiano'
-      },
-      {
-        url: 'musicas/Jads e Jadson e @paulafernandes - Linda Senhorita (Clipe Oficial).mp3',
-        titulo: 'Linda Senhorita',
-        artista: 'Jads & Jadson e Paula Fernandes'
-      },
-      {
-        url: 'musicas/YTDown_YouTube_Accidentally-In-Love-From-Shrek-2-Soundt_Media_vnBec1gpXSM_008_128k.mp3',
-        titulo: 'Accidentally In Love',
-        artista: 'Counting Crows (Shrek 2)'
-      },
-      {
-        url: 'musicas/YTDown_YouTube_Dragon-Ball-GT-Abertura-Melhor-qualidade_Media_3n3itDDgmQQ_008_128k.mp3',
-        titulo: 'Sorriso Resplandecente (Dragon Ball GT)',
-        artista: 'Sorriso Resplandecente'
-      },
-      {
-        url: 'musicas/YTDown_YouTube_Elvis-Presley-Burning-Love-Official-Audi_Media_zf2VYAtqRe0_009_128k.mp3',
-        titulo: 'Burning Love',
-        artista: 'Elvis Presley'
-      },
-      {
-        url: 'musicas/YTDown_YouTube_Gigi-Perez-Sailor-Song-Official-Music-Vi_Media_1lrFsXkT_rM_009_128k.mp3',
-        titulo: 'Sailor Song',
-        artista: 'Gigi Perez'
-      },
-      {
-        url: 'musicas/YTDown_YouTube_Legiao-Urbana-Tempo-perdido_Media_YPLQHeUSX2g_007_128k.mp3',
-        titulo: 'Tempo Perdido',
-        artista: 'Legião Urbana'
-      },
-      {
-        url: 'musicas/YTDown_YouTube_Media_UVCk4GfFXko_008_128k.mp3',
-        titulo: 'Nossa Sintonia Especial 💖',
-        artista: 'Cris & Você'
-      },
-      {
-        url: 'musicas/YTDown_YouTube_Neil-Diamond-Sweet-Caroline-Audio_Media_4F_RCWVoL4s_009_128k.mp3',
-        titulo: 'Sweet Caroline',
-        artista: 'Neil Diamond'
-      },
-      {
-        url: 'musicas/YTDown_YouTube_Snow-Patrol-Open-Your-Eyes-Official-Vide_Media_fk1Q9y6VVy0_009_128k(1).mp3',
-        titulo: 'Open Your Eyes',
-        artista: 'Snow Patrol'
-      }
-    ];
+      // 🎵 PLAYLIST DE MÚSICAS (RANDOMIZADAS E EM SHUFFLE)
+      // ==========================================
+      const PLAYLIST = [
+        {
+          url: "musicas/César Menotti, Fabiano - Como Um Anjo.mp3",
+          titulo: "Como Um Anjo",
+          artista: "César Menotti & Fabiano",
+        },
+        {
+          url: "musicas/Jads e Jadson e @paulafernandes - Linda Senhorita (Clipe Oficial).mp3",
+          titulo: "Linda Senhorita",
+          artista: "Jads & Jadson e Paula Fernandes",
+        },
+        {
+          url: "musicas/YTDown_YouTube_Accidentally-In-Love-From-Shrek-2-Soundt_Media_vnBec1gpXSM_008_128k.mp3",
+          titulo: "Accidentally In Love",
+          artista: "Counting Crows (Shrek 2)",
+        },
+        {
+          url: "musicas/YTDown_YouTube_Dragon-Ball-GT-Abertura-Melhor-qualidade_Media_3n3itDDgmQQ_008_128k.mp3",
+          titulo: "Sorriso Resplandecente (Dragon Ball GT)",
+          artista: "Sorriso Resplandecente",
+        },
+        {
+          url: "musicas/YTDown_YouTube_Elvis-Presley-Burning-Love-Official-Audi_Media_zf2VYAtqRe0_009_128k.mp3",
+          titulo: "Burning Love",
+          artista: "Elvis Presley",
+        },
+        {
+          url: "musicas/YTDown_YouTube_Gigi-Perez-Sailor-Song-Official-Music-Vi_Media_1lrFsXkT_rM_009_128k.mp3",
+          titulo: "Sailor Song",
+          artista: "Gigi Perez",
+        },
+        {
+          url: "musicas/YTDown_YouTube_Legiao-Urbana-Tempo-perdido_Media_YPLQHeUSX2g_007_128k.mp3",
+          titulo: "Tempo Perdido",
+          artista: "Legião Urbana",
+        },
+        {
+          url: "musicas/YTDown_YouTube_Media_UVCk4GfFXko_008_128k.mp3",
+          titulo: "Nossa Sintonia Especial 💖",
+          artista: "Cris & Juan",
+        },
+        {
+          url: "musicas/YTDown_YouTube_Neil-Diamond-Sweet-Caroline-Audio_Media_4F_RCWVoL4s_009_128k.mp3",
+          titulo: "Sweet Caroline",
+          artista: "Neil Diamond",
+        },
+        {
+          url: "musicas/YTDown_YouTube_Snow-Patrol-Open-Your-Eyes-Official-Vide_Media_fk1Q9y6VVy0_009_128k(1).mp3",
+          titulo: "Open Your Eyes",
+          artista: "Snow Patrol",
+        },
+      ];
 
-    let playlistEmbaralhada = [];
-    let indiceMusicaAtual = 0;
+      let playlistEmbaralhada = [];
+      let indiceMusicaAtual = 0;
 
       // ==========================================
       // 🧠 MOTOR DO STORY E NAVEGAÇÃO
@@ -1356,7 +1380,7 @@
               "radial-gradient(circle at center, #1b0336, #000000 90%)";
             slide.innerHTML = `
             <div class="wrapped-badge" style="background-color: #ff006e; color: #fff;">O Mistério Final</div>
-            <div class="neon-slanted-title" style="font-size: 23px; color: #ff006e;">Tenho uma surpresa para você... 🤫</div>
+            <div class="neon-slanted-title" style="font-size: 23px; color: #ff006e;">E eu tenho uma surpresa para você... 🤫</div>
             
             <div class="countdown-grid">
               <div class="countdown-item"><span id="cd-days">00</span><p>Dias</p></div>
@@ -1597,14 +1621,14 @@
       function carregarMusica(index) {
         if (!audio || playlistEmbaralhada.length === 0) return;
         const musica = playlistEmbaralhada[index];
-        
+
         // Define a fonte do áudio diretamente
         audio.src = musica.url;
         audio.load();
-        
+
         // Atualiza textos do player Spotify
-        const tituloEl = document.getElementById('track-title-text');
-        const artistaEl = document.getElementById('track-artist-text');
+        const tituloEl = document.getElementById("track-title-text");
+        const artistaEl = document.getElementById("track-artist-text");
         if (tituloEl) tituloEl.textContent = `${musica.titulo} 🎵`;
         if (artistaEl) artistaEl.textContent = musica.artista;
       }
@@ -1615,20 +1639,25 @@
         };
       }
 
-      function proximaMusica() {
+      function proximaMusica(e) {
+        if (e) e.stopPropagation();
         indiceMusicaAtual++;
         if (indiceMusicaAtual >= playlistEmbaralhada.length) {
           inicializarPlaylist();
         }
         carregarMusica(indiceMusicaAtual);
-        
+
         // Toca a música automática e inicia equalizador
-        audio.play().then(() => {
-          document.getElementById('play-icon').style.display = 'none';
-          document.getElementById('pause-icon').style.display = 'block';
-          document.getElementById('equalizer').classList.add('playing');
-          document.getElementById('album-art').style.animationPlayState = 'running';
-        }).catch(err => console.log("Erro ao tocar próxima música:", err));
+        audio
+          .play()
+          .then(() => {
+            document.getElementById("play-icon").style.display = "none";
+            document.getElementById("pause-icon").style.display = "block";
+            document.getElementById("equalizer").classList.add("playing");
+            document.getElementById("album-art").style.animationPlayState =
+              "running";
+          })
+          .catch((err) => console.log("Erro ao tocar próxima música:", err));
       }
 
       function togglePlayPause() {
